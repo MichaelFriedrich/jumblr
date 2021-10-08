@@ -3,12 +3,15 @@ package com.tumblr.jumblr;
 import com.tumblr.jumblr.exceptions.JumblrException;
 import com.tumblr.jumblr.request.RequestBuilder;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+
+import static org.mockito.ArgumentMatchers.nullable;
 import static org.mockito.Matchers.anyMap;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
@@ -28,7 +31,7 @@ public class JumblrClientErrorTest {
         builder = mock(RequestBuilder.class);
         client = new JumblrClient("ck", "cs", "@", "@");
         client.setRequestBuilder(builder);
-        when(builder.get(anyString(), anyMap())).thenThrow(JumblrException.class);
+        when(builder.get(anyString(), nullable(Map.class))).thenThrow(JumblrException.class);
         when(builder.post(anyString(), anyMap())).thenThrow(JumblrException.class);
         when(builder.postMultipart(anyString(), anyMap())).thenThrow(JumblrException.class);
         when(builder.getRedirectUrl(anyString())).thenThrow(JumblrException.class);
@@ -41,6 +44,12 @@ public class JumblrClientErrorTest {
     public void user() {
         thrown.expect(JumblrException.class);
         client.user();
+    }
+
+    @Test
+    public void test() {
+        thrown.expect(JumblrException.class);
+        builder.get("/user/info", null);
     }
 
     @Test

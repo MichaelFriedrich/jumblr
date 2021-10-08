@@ -3,12 +3,17 @@ package com.tumblr.jumblr;
 import com.tumblr.jumblr.request.RequestBuilder;
 import com.tumblr.jumblr.responses.ResponseWrapper;
 import com.tumblr.jumblr.types.QuotePost;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
 import static org.junit.Assert.*;
+
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.mockito.ArgumentMatchers.nullable;
 import static org.mockito.Matchers.anyMap;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
@@ -17,6 +22,7 @@ import static org.mockito.Mockito.when;
 
 /**
  * Tests for JumblrClient
+ *
  * @author jc
  */
 public class JumblrClientTest {
@@ -31,8 +37,8 @@ public class JumblrClientTest {
         client = new JumblrClient("ck", "cs", "@", "@");
         client.setRequestBuilder(builder);
         ResponseWrapper rw = new MockResponseWrapper();
-        when(builder.get(anyString(), anyMap())).thenReturn(rw);
-        when(builder.post(anyString(), anyMap())).thenReturn(rw);
+        when(builder.get(anyString(), nullable(Map.class))).thenReturn(rw);
+        when(builder.post(anyString(), nullable(Map.class))).thenReturn(rw);
         when(builder.postMultipart(anyString(), anyMap())).thenReturn(rw);
         when(builder.getRedirectUrl(anyString())).thenReturn("url");
     }
