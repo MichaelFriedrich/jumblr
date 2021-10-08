@@ -6,6 +6,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonSyntaxException;
 import com.tumblr.jumblr.JumblrClient;
 import com.tumblr.jumblr.exceptions.JumblrException;
+import com.tumblr.jumblr.exceptions.LimitException;
 import com.tumblr.jumblr.responses.JsonElementDeserializer;
 import com.tumblr.jumblr.responses.ResponseWrapper;
 import java.io.File;
@@ -152,7 +153,10 @@ public class RequestBuilder {
             } catch (JsonSyntaxException ex) {
                 throw new JumblrException(response);
             }
-        } else {
+        } else if (response.getCode() == 429){ // limit exceeded
+            throw new LimitException(response);
+        }
+        else {
             throw new JumblrException(response);
         }
     }
